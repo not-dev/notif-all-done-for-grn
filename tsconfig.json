@@ -14,11 +14,14 @@
     "paths": {
       "@*": [
         "./*"
+      ],
+      "chrome": [
+        "chrome"
       ]
     },
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
     "outDir": "./build/static/js",
     "rootDir": "./src",
     "moduleResolution": "node",

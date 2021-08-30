@@ -1,10 +1,7 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
-import CopyPlugin from 'copy-webpack-plugin'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import * as path from 'path'
 import TerserPlugin from 'terser-webpack-plugin'
 import type { Configuration } from 'webpack'
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { merge } from 'webpack-merge'
 
 import common from './webpack.common'
@@ -25,7 +22,8 @@ const base: Configuration = merge(common, {
     minimizer: [new TerserPlugin({
       terserOptions: {
         compress: { drop_console: true }
-      }
+      },
+      extractComments: false
     })],
     splitChunks: {
       cacheGroups: {
@@ -45,32 +43,7 @@ const base: Configuration = merge(common, {
     }
   },
   plugins: [
-    new CleanWebpackPlugin(),
-    new CopyPlugin({
-      patterns: [
-        {
-          context: wp.public,
-          from: '**/*',
-          to: wp.build,
-          globOptions: {
-            ignore: [
-              path.join(wp.public, '**/*.html').split(path.sep).join(path.posix.sep),
-              path.join(wp.public, '**/*.ejs').split(path.sep).join(path.posix.sep)
-            ]
-          }
-        }
-      ]
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(wp.public, 'index.html'),
-      minify: false,
-      inject: 'body'
-    }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: 'bundle-analyzer.html',
-      openAnalyzer: false
-    })
+    new CleanWebpackPlugin()
   ]
 })
 

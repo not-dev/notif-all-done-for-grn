@@ -1,28 +1,28 @@
-
-import { mainTheme as theme } from '@components/theme'
+import { App } from '@components/organisms'
+import { grnTheme as theme } from '@components/theme'
 import { CssBaseline } from '@material-ui/core'
-import { StylesProvider, ThemeProvider } from '@material-ui/core/styles'
+import { createGenerateClassName, StylesProvider, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
+import ReactDOM from 'react-dom'
 
-const Page = React.lazy(() => import(/* webpackChunkName: "home", webpackPrefetch: true */ '@components/pages/default'))
+const rootDOM = document.createElement('div')
+rootDOM.style.display = 'inline'
+rootDOM.id = 'notif-all-done-root'
+const parent = document.getElementById('tag-grnNotification-grn')
+parent?.parentNode?.appendChild(rootDOM)
 
-const rootDOM = document.getElementById('root')
-if (rootDOM != null) rootDOM.dataset.version = '0.1.0'
+const generateClassName = createGenerateClassName({
+  seed: 'notif-all-done'
+})
 
-import('react-dom')
-  .then(ReactDOM => {
-    ReactDOM.render(
-      <React.StrictMode>
-        <StylesProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <React.Suspense fallback={<></>}>
-              <Page />
-            </React.Suspense>
-          </ThemeProvider>
-        </StylesProvider>
-      </React.StrictMode>,
-      rootDOM
-    )
-  })
-  .catch(e => { throw e })
+ReactDOM.render(
+  <React.StrictMode>
+    <StylesProvider injectFirst generateClassName={generateClassName}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          <App />
+      </ThemeProvider>
+    </StylesProvider>
+  </React.StrictMode>,
+  rootDOM
+)

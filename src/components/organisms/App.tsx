@@ -1,95 +1,87 @@
-
-import Logo from '@assets/logo.svg'
-import { FlexBox } from '@components/atoms'
-import { Loading } from '@components/molecules'
-import { Box, Container, IconButton, Toolbar, Tooltip } from '@material-ui/core'
+import type { AlertSnackbarProps } from '@components/atoms'
+import { AlertSnackbar } from '@components/atoms'
+import { allDone } from '@helper'
+import { Box, IconButton } from '@material-ui/core'
 import type { Theme } from '@material-ui/core/styles'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import { HelpOutline as HelpIcon } from '@material-ui/icons'
-import { sleep } from '@util'
+import { DoneAll } from '@material-ui/icons'
 import React from 'react'
-import usePromise from 'react-promise-suspense'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      maxHeight: '100vh',
-      padding: theme.spacing(2)
+      width: 48,
+      height: 48,
+      display: 'inline-flex',
+      verticalAlign: 'middle',
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
-    toolbar: {
-      padding: theme.spacing(2)
+    doneIcon: {
+      color: theme.palette.getContrastText(theme.palette.text.primary)
     },
-    logo: {
-      height: '40vmin',
-      pointerEvents: 'none',
-      animation: '$spin infinite 20s linear'
-    },
-    '@keyframes spin': {
-      from: { transform: 'rotate(0deg)' },
-      to: { transform: 'rotate(360deg)' }
+    button: {
+      height: 68, // SQRT(2*(48^2))
+      width: 68,
+      fontSize: 28,
+      '&:hover': {
+        border: 'none'
+      },
+      '&:focus': {
+        outline: 'none'
+      },
+      '&:disabled': {
+        border: 'none'
+      }
     }
   })
 )
 
-type AppProps = {
-  title: React.ReactElement
-}
-
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC = () => {
   const classes = useStyles()
 
-  console.log('# Render App')
+  const [result, setResult] = React.useState<AlertSnackbarProps>({
+    open: false
+  })
 
-  const Suspensed = () => {
-    console.log('Suspense')
-    const promise = async () => {
-      await sleep(1)
-
-      return (
-        <Box
-          display='flex'
-          flexDirection='column'
-          alignItems='center'
-          justifyContent='center'
-          >
-          <Logo className={classes.logo}/>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-        </Box>
-      )
-    }
-    const data = usePromise(promise, [])
-
-    return (
-      <React.Suspense fallback={<Loading />}>
-        {data}
-      </React.Suspense>
-    )
+  const handleClick = async (): Promise<void> => {
+    await allDone()
+      .then((res) => {
+        setResult({
+          severity: 'success',
+          message: `${res.length}個の通知を既読`,
+          open: true,
+          onClose: () => {
+            setResult({
+              open: false,
+              severity: 'success'
+            })
+          }
+        })
+      }).catch(() => {
+        setResult({
+          severity: 'error',
+          message: 'ERROR',
+          open: true,
+          onClose: () => {
+            setResult({
+              open: false,
+              severity: 'error'
+            })
+          }
+        })
+      })
   }
 
   return (
-    <Container maxWidth='md' className={classes.root}>
-      <Toolbar className={classes.toolbar}>
-        <FlexBox justifyContent='flex-start'>
-          {props.title}
-        </FlexBox>
-        <Box>
-          <Tooltip title='' enterDelay={300}>
-            <IconButton><HelpIcon /></IconButton>
-          </Tooltip>
-        </Box>
-      </Toolbar>
-      <FlexBox>
-        <React.Suspense fallback={<Loading />}>
-          <Suspensed/>
-        </React.Suspense>
-      </FlexBox>
-    </Container>
+    <React.Fragment>
+      <Box className={classes.root}>
+        <IconButton className={classes.button} onClick={handleClick}>
+          <DoneAll className={classes.doneIcon}/>
+        </IconButton>
+      </Box>
+      <AlertSnackbar {...result}/>
+    </React.Fragment>
   )
 }
 

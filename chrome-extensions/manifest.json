@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "すべて既読ボタン for Garoon",
+  "version": "0.1.1",
+  "description": "Garoonの通知を全て既読にするボタンを追加する非公式拡張",
+  "icons": {
+    "128": "icon.png"
+  },
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.cybozu.com/g/*"
+      ],
+      "js": [
+        "static/js/index.js"
+      ],
+      "css": [
+        "static/css/roboto.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [],
+  "background": {},
+  "browser_action": {}
+}

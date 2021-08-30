@@ -1,4 +1,3 @@
-import Dotenv from 'dotenv-webpack'
 import * as path from 'path'
 import type { Configuration } from 'webpack'
 
@@ -14,9 +13,10 @@ const common: Configuration = {
       '.ts', '.js', '.tsx'
     ],
     alias: {
-      '@default': path.join(wp.src, '@default'),
       '@assets': path.join(wp.src, 'assets'),
+      '@api': path.join(wp.src, 'api'),
       '@components': path.join(wp.src, 'components'),
+      '@helper': path.join(wp.src, 'helper'),
       '@util': path.join(wp.src, 'util')
     }
   },
@@ -56,16 +56,11 @@ const common: Configuration = {
           'css-loader',
           'sass-loader'
         ]
-      },
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        use: ['source-map-loader']
       }
     ]
   },
   plugins: [
-    new Dotenv()
+
   ]
 }
 
