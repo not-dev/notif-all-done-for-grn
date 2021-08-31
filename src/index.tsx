@@ -1,6 +1,5 @@
 import { App } from '@components/organisms'
 import { grnTheme as theme } from '@components/theme'
-import { CssBaseline } from '@material-ui/core'
 import { createGenerateClassName, StylesProvider, ThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -19,7 +18,6 @@ ReactDOM.render(
   <React.StrictMode>
     <StylesProvider injectFirst generateClassName={generateClassName}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
           <App />
       </ThemeProvider>
     </StylesProvider>

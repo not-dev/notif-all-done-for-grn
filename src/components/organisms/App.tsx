@@ -1,6 +1,6 @@
 import type { AlertSnackbarProps } from '@components/atoms'
 import { AlertSnackbar } from '@components/atoms'
-import { allDone } from '@helper'
+import { allDone, notifBadgeClear } from '@helper'
 import { Box, IconButton } from '@material-ui/core'
 import type { Theme } from '@material-ui/core/styles'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
@@ -58,6 +58,7 @@ const App: React.FC = () => {
             })
           }
         })
+        notifBadgeClear()
       }).catch(() => {
         setResult({
           severity: 'error',

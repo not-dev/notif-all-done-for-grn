@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "すべて既読ボタン for Garoon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Garoonの通知を全て既読にするボタンを追加する非公式拡張",
   "icons": {
     "128": "icon.png"
